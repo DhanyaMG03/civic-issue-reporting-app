@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Report Issue</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+</head>
+<body>
+
+<h2>Report Local Issue</h2>
+
+<div id="map" style="height: 400px;"></div>
+
+<form method="POST" action="/submit">
+    <input type="hidden" id="lat" name="lat">
+    <input type="hidden" id="lng" name="lng">
+
+    <label>Issue Type:</label>
+    <select name="issue_type" id="issue_type" onchange="checkOther()">
+        <option>Pothole</option>
+        <option>Electric Line Problem</option>
+        <option>Water Leakage</option>
+        <option>Other</option>
+    </select>
+
+    <div id="other_box" style="display:none;">
+        <input type="text" name="description" placeholder="Describe issue">
+    </div>
+
+    <button type="submit">Submit</button>
+</form>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+var map = L.map('map').setView([13.0827, 80.2707], 13);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+map.on('click', function(e) {
+    document.getElementById('lat').value = e.latlng.lat;
+    document.getElementById('lng').value = e.latlng.lng;
+    alert("Location selected!");
+});
+
+function checkOther() {
+    var type = document.getElementById("issue_type").value;
+    document.getElementById("other_box").style.display =
+        (type === "Other") ? "block" : "none";
+}
+</script>
+
+</body>
+</html>

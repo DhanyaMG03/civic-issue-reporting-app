@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+</head>
+<body>
+
+<h2>Reported Issues</h2>
+
+<div id="map" style="height: 500px;"></div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+var map = L.map('map').setView([13.0827, 80.2707], 12);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+fetch('/api/issues')
+.then(res => res.json())
+.then(data => {
+    data.forEach(issue => {
+        L.marker([issue.lat, issue.lng])
+            .addTo(map)
+            .bindPopup(
+                "<b>" + issue.type + "</b><br>" + issue.desc
+            );
+    });
+});
+</script>
+
+</body>
+</html>
